@@ -34,3 +34,7 @@ async function displayUserData() {
         alert("Failed to fetch user data. Try again!");
     }
 }
+
+window.onload = () => {
+    displayUserData();
+};
