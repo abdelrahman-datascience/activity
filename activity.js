@@ -1,10 +1,7 @@
 async function fetchRandomUserData() {
     try {
         const response = await fetch("https://randomuser.me/api/");
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
         const user = data.results[0];
@@ -14,7 +11,8 @@ async function fetchRandomUserData() {
             email: user.email,
             gender: user.gender,
             age: user.dob.age,
-            country: user.location.country
+            country: user.location.country,
+            picture: user.picture.large
         };
     } catch (error) {
         console.error("Error fetching user data:", error);
@@ -26,14 +24,17 @@ async function displayUserData() {
     const userData = await fetchRandomUserData();
 
     if (userData) {
-        console.log(`User Name: ${userData.name}`);
-        console.log(`User Email: ${userData.email}`);
-        console.log(`Gender: ${userData.gender}`);
-        console.log(`Age: ${userData.age}`);
-        console.log(`Country: ${userData.country}`);
+        document.getElementById("userImage").src = userData.picture;
+        document.getElementById("userName").innerHTML = `👤 Name: ${userData.name}`;
+        document.getElementById("userEmail").innerHTML = `📧 Email: ${userData.email}`;
+        document.getElementById("userGender").innerHTML = `⚧ Gender: ${userData.gender}`;
+        document.getElementById("userAge").innerHTML = `🎂 Age: ${userData.age}`;
+        document.getElementById("userCountry").innerHTML = `📍 Country: ${userData.country}`;
     } else {
-        console.log("Failed to fetch user data.");
+        alert("Failed to fetch user data. Try again!");
     }
 }
 
-displayUserData();
+window.onload = () => {
+    displayUserData();
+};
